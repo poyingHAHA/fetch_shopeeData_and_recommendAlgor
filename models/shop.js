@@ -1,21 +1,5 @@
 import mongoose from "mongoose";
-
-const buyerFollowSchema = new mongoose.Schema({
-  buyerid:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Buyer'
-  },
-  profile:{
-    type: String
-  }
-})
-
-const shopFollowSchema = new mongoose.Schema({
-  shopid:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Shop'
-  }
-})
+import { buyerFollowSchema, shopFollowSchema } from "./partial/partialSchema";
 
 const shopSchema = new mongoose.Schema({
   sp_shopid: {
