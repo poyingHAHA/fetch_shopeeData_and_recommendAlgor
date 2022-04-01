@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { tinderUserSchema } from "./partial/partialSchema"
+import { tinderUserSchema } from "./partial/partialSchema.js"
 
 const labelSchema = new mongoose.Schema({
   labelid:{
@@ -8,6 +8,8 @@ const labelSchema = new mongoose.Schema({
   display_name:{
     type: String
   }
+}, {
+  _id: false
 })
 
 const variationSchema = new mongoose.Schema({
@@ -17,28 +19,41 @@ const variationSchema = new mongoose.Schema({
       type: String
     }
   ],
-  images: String
+  images: [String]
+}, {
+  _id: false
 })
 
 const ratingSchema = new mongoose.Schema({
   rating_star: Number,
   rating_count: [Number]
+}, {
+  _id: false
 })
 
 const likeSchema = new mongoose.Schema({
   userid: mongoose.Types.ObjectId
 },{
-  timestamps: true,
-  autoIndex: true
+  timestamps: { createdAt: true, updatedAt: false },
+  autoIndex: true,
+  _id: false
 })
 
 const shareSchema = new mongoose.Schema({
   userid: mongoose.Types.ObjectId,
   postid: mongoose.Types.ObjectId
+}, {
+  timestamps: { createdAt: true, updatedAt: false },
+  autoIndex: true
 })
 
 const productPostSchema = new mongoose.Schema(
   {
+    shopid:{
+      required: true,
+      type: mongoose.Types.ObjectId,
+      ref: 'Shop'
+    },
     sp_itemid:{
       type: Number
     },
@@ -59,6 +74,13 @@ const productPostSchema = new mongoose.Schema(
       default: false
     },
     variation: [variationSchema],
+    models: [{
+      name: String,
+      price: Number,
+      stock: Number,
+      modelid: Number,
+      _id: false
+    }],
     images:[String],
     display:{
       type: Boolean
@@ -80,8 +102,11 @@ const productPostSchema = new mongoose.Schema(
   }
 )
 
-productPostSchema.virtual("ratings",{
+productPostSchema.virtual("ratingDetail",{
   ref: 'Rating',
   localField: '_id',
   foreignField: 'itemid'
 })
+
+const ProductPost = mongoose.model('ProductPost', productPostSchema)
+export default ProductPost

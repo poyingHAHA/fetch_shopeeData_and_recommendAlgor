@@ -4,7 +4,7 @@ import {
   shopFollowSchema,
   likeItemSchema,
   tinderItemSchema,
-} from "./partial/partialSchema";
+} from "./partial/partialSchema.js";
 
 const buyerSchema = new mongoose.Schema(
   {
@@ -30,12 +30,18 @@ const buyerSchema = new mongoose.Schema(
     follower: {
       buyer: [buyerFollowSchema],
       shop: [shopFollowSchema],
-      count: 0,
+      count: {
+        type: Number,
+        set: ()=>this.buyer.length+this.shop.length
+      },
     },
     following: {
       buyer: [buyerFollowSchema],
       shop: [shopFollowSchema],
-      count: 0,
+      count: {
+        type: Number,
+        set: ()=>this.buyer.length+this.shop.length
+      },
     },
     tinderLike: [tinderItemSchema],
     tinderDislike: [tinderItemSchema],
@@ -50,3 +56,6 @@ buyerSchema.virtual("sharePosts", {
   localField: "_id",
   foreignField: "buyerid",
 });
+
+const Buyer = mongoose.model('Buyer', buyerSchema)
+export default Buyer

@@ -15,7 +15,7 @@ import {
 // const shop_url = "https://shopee.tw/api/v4/shop/get_shop_detail?shopid=191096305"
 
 const shopids = [
-//   191096305, // adidas
+  191096305, // adidas
   79684414, // gap
   37004578, // L'Oréal Paris巴黎萊雅
   // 76650281, // DR.WU官方旗艦店
@@ -54,20 +54,20 @@ const fetch_shopee = async (shopid) => {
 // }
 
 // 更新蝦皮商品資料與爬取品論
-// for (let i = 0; i < shopids.length; i++) {
-//   console.log("shop: ", shopids[i]);
-//   const items = fs.readdirSync(`D:/shopee/shop_${shopids[i]}/itemsInfo_shopee`);
-//     // console.log(items);
-//   for (let j = 0; j < items.length; j++) {
-//     const item = +items[j].replace(".json", "");
-//     console.log(item);
-//     update_product_to_tinder(item, shopids[i]);
-//     // getRatings(shopids[i], item, 0, 59);
-//   }
-// }
+for (let i = 0; i < shopids.length; i++) {
+  console.log("shop: ", shopids[i]);
+  const items = fs.readdirSync(`D:/shopee/shop_${shopids[i]}/itemsInfo_shopee`);
+    // console.log(items);
+  for (let j = 0; j < items.length; j++) {
+    const item = +items[j].replace(".json", "");
+    console.log(item);
+    // update_product_to_tinder(item, shopids[i]);
+    getRatings(shopids[i], item, 0, 59);
+  }
+}
 
 //更新蝦皮店家資料用
-for (let i = 0; i < shopids.length; i++) {
-    update_shop_to_tinder(shopids[i])
-    console.log("done")
-}
+// for (let i = 0; i < shopids.length; i++) {
+//     update_shop_to_tinder(shopids[i])
+//     console.log("done")
+// }
