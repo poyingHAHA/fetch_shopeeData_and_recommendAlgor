@@ -1,89 +1,62 @@
-import mongoose from "mongoose"
-import { tinderUserSchema } from "./partial/partialSchema.js"
+import mongoose from "mongoose";
+import { tinderUserSchema } from "./partial/partialSchema.js";
+import {
+  labelSchema,
+  variationSchema,
+  ratingSchema,
+  likeSchema,
+} from "./partial/partialSchemaForPost.js";
 
-const labelSchema = new mongoose.Schema({
-  labelid:{
-    type: Number
+const shareSchema = new mongoose.Schema(
+  {
+    userid: mongoose.Types.ObjectId,
+    postid: mongoose.Types.ObjectId,
   },
-  display_name:{
-    type: String
+  {
+    timestamps: { createdAt: true, updatedAt: false },
+    autoIndex: true,
   }
-}, {
-  _id: false
-})
-
-const variationSchema = new mongoose.Schema({
-  name: String,
-  options: [
-    {
-      type: String
-    }
-  ],
-  images: [String]
-}, {
-  _id: false
-})
-
-const ratingSchema = new mongoose.Schema({
-  rating_star: Number,
-  rating_count: [Number]
-}, {
-  _id: false
-})
-
-const likeSchema = new mongoose.Schema({
-  userid: mongoose.Types.ObjectId
-},{
-  timestamps: { createdAt: true, updatedAt: false },
-  autoIndex: true,
-  _id: false
-})
-
-const shareSchema = new mongoose.Schema({
-  userid: mongoose.Types.ObjectId,
-  postid: mongoose.Types.ObjectId
-}, {
-  timestamps: { createdAt: true, updatedAt: false },
-  autoIndex: true
-})
+);
 
 const productPostSchema = new mongoose.Schema(
   {
-    shopid:{
+    shopid: {
       required: true,
       type: mongoose.Types.ObjectId,
-      ref: 'Shop'
+      ref: "Shop",
     },
-    sp_itemid:{
-      type: Number
+    sp_itemid: {
+      type: Number,
     },
-    sp_shopid:{
-      type: Number
+    sp_shopid: {
+      type: Number,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
-    content:{
-      type: String
+    content: {
+      type: String,
     },
     labels: [labelSchema],
     feLabels: [labelSchema],
     shipping_free: {
       type: Boolean,
-      default: false
+      default: false,
     },
     variation: [variationSchema],
-    models: [{
-      name: String,
-      price: Number,
-      stock: Number,
-      modelid: Number,
-      _id: false
-    }],
-    images:[String],
-    display:{
-      type: Boolean
+    models: [
+      {
+        name: String,
+        price: Number,
+        stock: Number,
+        modelid: Number,
+        _id: false,
+      },
+    ],
+    images: [String],
+    display: {
+      type: Boolean,
     },
     price: Number,
     priceMax: Number,
@@ -97,16 +70,23 @@ const productPostSchema = new mongoose.Schema(
     shared: [shareSchema],
     tinderLike: tinderUserSchema,
     tinderDislike: tinderUserSchema,
-  },{
+  },
+  {
     timestamps: true
   }
-)
+);
 
-productPostSchema.virtual("ratingDetail",{
-  ref: 'Rating',
-  localField: '_id',
-  foreignField: 'itemid'
-})
+productPostSchema.virtual("ratingDetail", {
+  ref: "Rating",
+  localField: "_id",
+  foreignField: "itemid",
+});
 
-const ProductPost = mongoose.model('ProductPost', productPostSchema)
-export default ProductPost
+productPostSchema.virtual("sharePosts", {
+  ref: "SharePost",
+  localField: "_id",
+  foreignField: "itemid",
+});
+
+const ProductPost = mongoose.model("ProductPost", productPostSchema);
+export default ProductPost;

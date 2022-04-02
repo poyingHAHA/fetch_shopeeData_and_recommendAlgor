@@ -57,5 +57,11 @@ buyerSchema.virtual("sharePosts", {
   foreignField: "buyerid",
 });
 
+buyerSchema.virtual("orders", {
+  ref: "Order",
+  localField: "_id",
+  foreignField: "buyerid"
+})
+
 const Buyer = mongoose.model('Buyer', buyerSchema)
 export default Buyer

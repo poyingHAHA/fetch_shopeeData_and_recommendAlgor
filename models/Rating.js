@@ -16,6 +16,7 @@ const ratingSchema = new mongoose.Schema(
     ratings:[{
       itemid: mongoose.Types.ObjectId,
       shopid: mongoose.Types.ObjectId,
+      orderid: mongoose.Types.ObjectId,
       sp_shopid: Number,
       sp_itemid: Number,
       sp_orderid: Number,

@@ -43,7 +43,7 @@ const addRatings = async (itemid, sp_itemid, shopid, sp_shopid, items, idx) => {
       ratings: ratingsData,
     });
   
-    ratings.save().then(() => {
+    await ratings.save().then(() => {
         console.log("saved");
         if (idx == items.length - 1) {
           console.log("last one done");
@@ -68,8 +68,7 @@ const addProducts = async (sp_itemid, sp_shopid, shopInfo, items, idx) => {
     shopid: shopInfo._id,
   });
 
-  productPost.save().then(() => {
-      console.log("saved");
+  await productPost.save().then(() => {
       if (idx == items.length - 1) {
         console.log("last one done");
       }
@@ -84,7 +83,7 @@ const addProducts = async (sp_itemid, sp_shopid, shopInfo, items, idx) => {
 const shops = await fs.readdir("D:/shopee");
 
 // 刪除shops所有資料
-await Shop.deleteMany({})
+// await Shop.deleteMany({})
 
 // 刪除productPosts所有資料
 // await ProductPost.deleteMany({})
@@ -99,7 +98,7 @@ await Shop.deleteMany({})
 //   const items = await fs.readdir(`D:/shopee/shop_${sp_shopid}/itemsInfo_tinder`);
 //   items.forEach(async (sp_itemid, idx) => {
 //     sp_itemid = sp_itemid.replace('.json', '')
-//     // await addProducts(sp_itemid, sp_shopid, shopInfo, items, idx)
+//     await addProducts(sp_itemid, sp_shopid, shopInfo, items, idx)
     
 //     const item = await ProductPost.findOne({ sp_itemid: +sp_itemid });
 //     const itemid = item._id;
@@ -108,8 +107,8 @@ await Shop.deleteMany({})
 // });
 
 // 更新商店資訊用
-shops.forEach(shop=>{
-  const id = shop.replace('shop_', '')
-  console.log(id)
-  addShop(id)
-})
+// shops.forEach(shop=>{
+//   const id = shop.replace('shop_', '')
+//   console.log(id)
+//   addShop(id)
+// })
