@@ -21,7 +21,7 @@ const shopSchema = new mongoose.Schema(
       require: true,
       unique: true
     },
-    passeord: {
+    password: {
       type: String,
       require: true,
     },

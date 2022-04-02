@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const dbName = 'tinder-like-test'
+const dbName = 'tinderAppDB'
 const connectionURL = 'mongodb://127.0.0.1:27017/'+dbName
 
 mongoose.connect(connectionURL).then(()=>{

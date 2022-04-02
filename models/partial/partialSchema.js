@@ -46,7 +46,7 @@ const tinderItemSchema = new mongoose.Schema(
       labelid: Number,
       display_name: String
     }],
-    dLabels: [{
+    feLabels: [{
       labelid: Number,
       display_name: String
     }]
