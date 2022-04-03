@@ -15,6 +15,9 @@ const shopSchema = new mongoose.Schema(
       type: String,
       deault: "shop",
     },
+    name:{
+      type: String
+    },
     itemcount: Number,
     account: {
       type: String,

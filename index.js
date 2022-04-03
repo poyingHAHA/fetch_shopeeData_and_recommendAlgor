@@ -106,9 +106,9 @@ const shops = await fs.readdir("D:/shopee");
 //   });
 // });
 
-// 更新商店資訊用
-// shops.forEach(shop=>{
-//   const id = shop.replace('shop_', '')
-//   console.log(id)
-//   addShop(id)
-// })
+更新商店資訊用
+shops.forEach(shop=>{
+  const id = shop.replace('shop_', '')
+  console.log(id)
+  addShop(id)
+})
