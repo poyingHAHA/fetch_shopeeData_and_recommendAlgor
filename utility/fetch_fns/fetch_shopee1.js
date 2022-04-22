@@ -11,10 +11,10 @@ import fs from "fs-extra";
 //   191096305,
 // ]
 
+
 // 獲取商店商品ID資料，目前一家店抓100樣商品
 const getShopItem = async (fetchSize, shopid) => {
   console.log("start fetching items' id");
-  const itemlist = [];
   const items_url = `https://shopee.tw/api/v4/search/search_items?by=pop&limit=${fetchSize}&match_id=${shopid}&order=desc&page_type=shop&scenario=PAGE_OTHERS&version=2`;
   const response = await fetch(items_url);
   const itemsJSON = await response.json();
@@ -158,33 +158,17 @@ const fetchShop = async (shopid) => {
     itemcount: shopData.item_count,
     role: "shop",
     account: shopData.account.username,
-    password: "shopeetest",
     profilePic: shopData.cover,
     selfIntro: shopData.description,
-    // productPost: 根據shopID拿,
-    // productCount: 等等看一家點要拿多少資料,
-    follower: {
-      buyer: [{ buyerid: null, buyerPic: null }],
-      shop: [{ shopid: null, shopPic: null }],
-      count: 0,
-    },
-    following: {
-      buyer: [{ buyerid: null, buyerPic: null }],
-      shop: [{ shopid: null, shopPic: null }],
-      count: 0,
-    },
+    followerCount: 0,
+    followingCount: 0,
+    likeCount: 0,
     rating: {
       ratingStar: shopData.rating_star, // 先用蝦皮的
       ratingBad: shopData.rating_bad, // 先用蝦皮的
       ratingNormal: shopData.rating_normal, // 先用蝦皮的
       ratingGood: shopData.rating_good, // 先用蝦皮的
-    },
-    shared: [
-      {
-        postid: null,
-        buyerid: null,
-      },
-    ],
+    }
     // productList: [] // 到時候用virtual關聯
     // timestamp: true,
   };
