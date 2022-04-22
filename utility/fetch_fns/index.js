@@ -41,8 +41,6 @@ const shops = [shoes, exeshop, mclothes, fClothes, cosmetics, baby, fbag, mbag, 
 // 讀取目前已經有的店家
 const read_dirs = fs.readdirSync("D:/shopee").map((dir) => dir.replace("shop_", ""));
 
-fetchShop('1928431')
-
 // 檢查商店是否已經存在資料夾
 const checkShop = async(shopid) => {
   // check if already been fetched
@@ -54,13 +52,15 @@ const checkShop = async(shopid) => {
 }
 
 const fetch_shopee = async (shopid) => {
-  await fetchShop(shopid);
-  await getShopItem(100, shopid);
-  const itemids = await readIDs(shopid, 100);
+  const shop = await fetchShop(shopid);
+  await getShopItem(100, 100, shop.itemCount, shopid);
+  const itemids = await readIDs(shopid, shop.itemCount);
+  console.log(itemids)
   for (let i = 0; i < itemids.length; i++) {
     fetchProduct(itemids[i], shopid);
   }
 };
+// fetch_shopee('142427276')
 
 // 爬取蝦皮資料用
 // for(let i=0; i<shopids.length; i++){

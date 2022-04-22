@@ -13,19 +13,24 @@ import fs from "fs-extra";
 
 
 // 獲取商店商品ID資料，目前一家店抓100樣商品
-const getShopItem = async (fetchSize, shopid) => {
+const getShopItem = async (fetchSize, skipSize, itemCount, shopid) => {
   console.log("start fetching items' id");
-  const items_url = `https://shopee.tw/api/v4/search/search_items?by=pop&limit=${fetchSize}&match_id=${shopid}&order=desc&page_type=shop&scenario=PAGE_OTHERS&version=2`;
-  const response = await fetch(items_url);
-  const itemsJSON = await response.json();
-  const items = itemsJSON.items;
-  const itemids = items.map((item) => item.itemid);
-  // console.log(itemids)
+  let allItemsId = [];
+  const round = Math.ceil(itemCount/fetchSize);
 
-  const data_save = await JSON.stringify(itemids);
+  for(let i=0; i<round; i++){ 
+    const items_url = `https://shopee.tw/api/v4/search/search_items?by=pop&limit=${fetchSize}&match_id=${shopid}&newest=${skipSize*i}&order=desc&page_type=shop&scenario=PAGE_OTHERS&version=2`;
+    const response = await fetch(items_url);
+    const itemsJSON = await response.json();
+    const items = itemsJSON.items;
+    const itemids = items.map((item) => item.itemid);
+    allItemsId = allItemsId.concat(itemids);
+  }
+
+  const data_save = await JSON.stringify(allItemsId);
   try {
     await fs.outputFile(
-      `D:/shopee/shop_${shopid}/itemids/itemids_${fetchSize}.json`,
+      `D:/shopee/shop_${shopid}/itemids/itemids_${itemCount}.json`,
       data_save
     );
   } catch (err) {
@@ -81,7 +86,7 @@ const fetchProduct = async (itemid, shopid) => {
     images: productData.images,
     stock: productData.stock, // 庫存
     rating: productData.item_rating, // 這只有staring跟count，要內容再另外發request
-    likes: [],
+    likeCount: 0,
     // timestamp: // 存入資料庫在放
     // shared:
   };
@@ -155,7 +160,7 @@ const fetchShop = async (shopid) => {
   const shop = {
     sp_shopid: shopData.shopid,
     name: shopData.name,
-    itemcount: shopData.item_count,
+    itemCount: shopData.item_count,
     role: "shop",
     account: shopData.account.username,
     profilePic: shopData.cover,
@@ -186,8 +191,8 @@ const fetchShop = async (shopid) => {
     `D:/shopee/shop_${shopid}/shopInfo_${shopid}_post.json`,
     JSON.stringify(shop)
   );
-
   console.log("fetching shop data done");
+  return shop;
 };
 
 // 透過shopid跟要讀的數量讀取itemid
